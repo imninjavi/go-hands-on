@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dito-app-config
+data:
+  APP_NAME: "Aplikasi Golang-Dev"
+  WELCOME_MESSAGE: "Welcome to Development"
+  DB_HOST: "mariadb-svc"
+  DB_PORT: "3306"

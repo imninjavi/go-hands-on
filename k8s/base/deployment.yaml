@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hands-on-dito
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hands-on-dito
+  template:
+    metadata:
+      labels:
+        app: hands-on-dito
+    spec:
+      containers:
+        - name: go-dito
+          image: image-registry.openshift-image-registry.svc:5000/app-deployment-tok/hands-on-dito
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: dito-app-config
+            - secretRef:
+                name: dito-app-secret
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 0
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
